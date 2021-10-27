@@ -21,4 +21,16 @@ server.get('/callback', (req, res) => {
   }
 );
 
+server.get('/find-active-chat', (req, res) => {
+    youtubeService.findActiveChat();
+    res.redirect('/');
+  }
+);
+
+server.get('/start-tracking-chat', (req, res) => {
+  youtubeService.startTrackingChat();
+  res.redirect('/');
+}
+);
+
 server.listen(3000, () => console.log('Server is ready!'));

@@ -63,6 +63,36 @@ auth.on('tokens', () => {
   save('./tokens.json', JSON.stringify(tokens));
 });
 
+youtubeService.findActiveChat = async() => {
+  const response = await youtube.liveBroadcasts.list({
+    auth,
+    part: 'snippet',
+    broadcastStatus: 'active'
+  });
+  const latestChat = response.data.items[0];
+  liveChatID = latestChat.snippet.liveChatId;
+  console.log('Chat ID found', liveChatID)
+}
+
+const getChatMessages = () => {
+  const response = await youtube.liveChatMessages.list({
+    auth,
+    part: ['snippet', 'authorDetails'],
+    liveChatId: liveChatID,
+    pageToken: nextPage
+  });
+  const {data} = response;
+  const newMessages = data.items;
+  chatMessages.push(...newMessages);
+  nextPage = data.nextPageToken;
+  console.log('Total chat messages:', chatMessages.length);
+  console.log('Messages:', ...newMessages);
+}
+
+youtubeService.startTrackingChat = async() => {
+  interval = setInterval(getChatMessages, intervalTime);
+}
+
 const checkTokens = async () => {
   const tokens = await read('./tokens.json');
   if (tokens) {
