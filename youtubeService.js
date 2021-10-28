@@ -89,18 +89,19 @@ youtubeService.findActiveChat = async() => {
   console.log('Chat ID found', liveChatID)
 }
 
-const respond = newMessages => {
+const respond = (newMessages, data) => {
   newMessages.forEach(message => {
     const messageText = message.snippet.displayMessage.toLowerCase();
-    if (messageText == "!join") {
-      const author = message.authorDetails.displayName;
-      console.log('Message: ', messageText, 'Author: ', author);
+    const author = message.authorDetails.displayName;
+    console.log('Message: ', messageText, 'Author: ', author);
+    if (messageText == data.enterMessage && !raffleUsersEntered.includes(author)) {
       raffleUsersEntered.push(author);
     }
   });
 }
 
-const getChatMessages = async() => {
+const getChatMessages = async(raffleData) => {
+  console.log('Get chat');
   const response = await youtube.liveChatMessages.list({
     auth,
     part: ['snippet', 'authorDetails'],
@@ -113,21 +114,30 @@ const getChatMessages = async() => {
   nextPage = data.nextPageToken;
   if (raffleStarted) {
     chatMessages.push(...newMessages);
-    respond(newMessages);
+    respond(newMessages, raffleData);
   }
   raffleStarted = true;
   console.log('Total chat messages:', chatMessages.length);
 }
 
-youtubeService.startTrackingChat = async() => {
-  interval = setInterval(getChatMessages, intervalTime);
+const startTrackingChat = async(data) => {
+  console.log("Start raffle");
+  interval = setInterval(function() { getChatMessages(data); }, intervalTime);
 }
 
-youtubeService.stopTrackingChat = async() => {
+const stopTrackingChat = async() => {
+  console.log('Stop raffle');
   clearInterval(interval);
   raffleStarted = false;
   console.log(raffleUsersEntered);
   raffleUsersEntered = [];
+}
+
+youtubeService.startRaffle = async(data) => {
+  console.log('Start');
+  console.log(data.duration * 60 * 1000);
+  startTrackingChat(data);
+  setTimeout(stopTrackingChat, (data.duration * 60 * 1000));
 }
 
 // Print variables

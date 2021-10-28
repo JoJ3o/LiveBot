@@ -13,5 +13,26 @@
     <a href="/start-tracking-chat"><button>Start Tracking Chat</button></a>
     <a href="/stop-tracking-chat"><button>Stop Tracking Chat</button></a>
     <a href="/get-variable"><button>Get Variable</button></a>
+    <br><br>
+    <form action="/start-raffle" method="post">
+        <label for="duration">Duration (Minutes): </label>
+        <input type="number" id="duration" name="duration" min="1" max="60" value="1" autofocus required><br>
+        <label for="enterMessage">Message to enter: </label>
+        <input type="text" id="enterMessage" name="enterMessage" value="!join" placeholder="!join" required><br>
+        <label for="subOnly">Subscribers only: </label>
+        <input type="hidden" name="subOnly" value="0">
+        <input type="checkbox" id="subOnly" name="subOnly" value="1"><br>
+        <label for="memberOnly">Members only: </label>
+        <input type="hidden" name="memberOnly" value="0">
+        <input type="checkbox" id="memberOnly" name="memberOnly" value="1"><br>
+        <label for="subPrivilege">Subscriber chance increase: </label>
+        <input type="number" id="subPrivilege" name="subPrivilege" min="1" max="10" value="2" required><br>
+        <label for="memberPrivilege">Member chance increase: </label>
+        <input type="number" id="memberPrivilege" name="memberPrivilege" min="1" max="10" value="5" required><br>
+        <label for="winnerAmount">Amount of Winners drawn: </label>
+        <input type="number" id="winnerAmount" name="winnerAmount" min="1" max="100" value="1" required><br>
+        <input type="submit" value="Submit">
+        <input type="reset" value="Reset">
+    </form>
 </body>
 </html>

@@ -5,6 +5,7 @@
 - Grey out sub/member chances when sub/member only is selected
 - default enter message = !join
 - default enter message case sensitive or not
+- No double enters
 
 ## Raffle Options
 - Message to enter
