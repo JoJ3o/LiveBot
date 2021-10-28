@@ -6,6 +6,7 @@ const writeFilePromise = util.promisify(fs.writeFile);
 const readFilePromise = util.promisify(fs.readFile);
 
 let liveChatID;
+let channelID;
 let nextPage;
 const intervalTime = 10000;
 let interval;
@@ -30,9 +31,11 @@ const Oauth2 = google.auth.OAuth2;
 const clientID = "702193958045-mog7ismh8cv9j9gipkjkrj6h0rhkf6rh.apps.googleusercontent.com";
 const clientSecret = "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";
 const redirectURI = "http://localhost:3000/callback";
+const apiKey = "AIzaSyC-Nwezpbnq6gJAFWflaxRtymKgYMCVUpE";
 
 const scope = [
-  'https://www.googleapis.com/auth/youtube.readonly'
+  'https://www.googleapis.com/auth/youtube.readonly',
+  'https://www.googleapis.com/auth/youtube.channel-memberships.creator'
 ];
 
 const auth = new Oauth2(clientID, clientSecret, redirectURI);
@@ -85,17 +88,60 @@ youtubeService.findActiveChat = async() => {
     broadcastStatus: 'active'
   });
   const latestChat = response.data.items[0];
+  channelID = latestChat.snippet.channelId;
   liveChatID = latestChat.snippet.liveChatId;
+  console.log('Channel ID found', channelID);
   console.log('Chat ID found', liveChatID)
+}
+
+const checkSub = async channelId => {
+  try {
+    const response = await youtube.subscriptions.list({
+      key: apiKey,
+      part: ['snippet', 'contentDetails', 'subscriberSnippet'],
+      channelId: channelId,
+      forChannelId: channelID
+    });
+    if (response.data.pageInfo.totalResults >= 1) {
+      return true;
+    }
+  } catch (err) {
+    console.log("Catched bish");
+    console.log(err.message);
+  }
+  return false;
+}
+
+const checkMember = async channelId => {
+  try {
+    const response = await youtube.members.list({
+
+    });
+
+  } catch (err) {
+    console.log("Catched!");
+    console.log(err.message);
+  }
 }
 
 const respond = (newMessages, data) => {
   newMessages.forEach(message => {
     const messageText = message.snippet.displayMessage.toLowerCase();
     const author = message.authorDetails.displayName;
-    console.log('Message: ', messageText, 'Author: ', author);
+    console.log('Message:', messageText, ' || Author:', author);
     if (messageText == data.enterMessage && !raffleUsersEntered.includes(author)) {
-      raffleUsersEntered.push(author);
+      if (data.subOnly.at(-1) == 1) {
+        checkSub(message.authorDetails.channelId).then(function(results){
+          if (results == true) {
+            console.log(author, "is subscribed!");
+            raffleUsersEntered.push(author);
+          }
+        });
+      } else if (data.memberOnly.at(-1) == 1) {
+        checkMember(message.authorDetails.channelId);
+      } else {
+        raffleUsersEntered.push(author);
+      }
     }
   });
 }

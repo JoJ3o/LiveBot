@@ -28,16 +28,6 @@ server.get('/find-active-chat', (req, res) => {
     res.redirect('/');
 });
 
-server.get('/start-tracking-chat', (req, res) => {
-    youtubeService.startTrackingChat();
-    res.redirect('/');
-});
-
-server.get('/stop-tracking-chat', (req, res) => {
-    youtubeService.stopTrackingChat();
-    res.redirect('/');
-});
-
 server.get('/get-variable', (req, res) => {
     youtubeService.getVariable();
     res.redirect('/');

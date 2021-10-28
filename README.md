@@ -6,6 +6,7 @@
 - default enter message = !join
 - default enter message case sensitive or not
 - No double enters
+- validate form data
 
 ## Raffle Options
 - Message to enter
