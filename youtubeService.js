@@ -115,13 +115,16 @@ const checkSub = async channelId => {
 const checkMember = async channelId => {
   try {
     const response = await youtube.members.list({
-
+      auth,
+      part: 'snippet'
     });
+    console.log(response.data);
 
   } catch (err) {
     console.log("Catched!");
     console.log(err.message);
   }
+  return false
 }
 
 const respond = (newMessages, data) => {
@@ -138,7 +141,12 @@ const respond = (newMessages, data) => {
           }
         });
       } else if (data.memberOnly.at(-1) == 1) {
-        checkMember(message.authorDetails.channelId);
+        checkMember(message.authorDetails.channelId).then(function(results){
+          if (results == true) {
+            console.log(author, "is a Member!");
+            raffleUsersEntered.push(author);
+          }
+        });
       } else {
         raffleUsersEntered.push(author);
       }
