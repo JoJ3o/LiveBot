@@ -11,7 +11,7 @@ let nextPage;
 const intervalTime = 5000;
 let interval;
 let chatMessages = [];
-let raffleUsersEntered = ["Cupcake"];
+let raffleUsersEntered = [];
 let raffleStarted = false;
 
 const save = async(path, data) => {
@@ -30,7 +30,7 @@ const Oauth2 = google.auth.OAuth2;
 
 const clientID = "702193958045-mog7ismh8cv9j9gipkjkrj6h0rhkf6rh.apps.googleusercontent.com";
 const clientSecret = "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";
-const redirectURI = "http://localhost:3000/callback";
+const redirectURI = "http://localhost:3000/callback-yt";
 const apiKey = "AIzaSyC-Nwezpbnq6gJAFWflaxRtymKgYMCVUpE";
 
 const scope = [
@@ -241,11 +241,6 @@ const pickWinner = (winnerAmount, duplicateWinners) => {
         }
     }
     console.log(winnerArray);
-}
-
-// Print variables
-youtubeService.getVariable = () => {
-    console.log(raffleUsersEntered);
 }
 
 checkTokens();
