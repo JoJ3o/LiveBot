@@ -1,0 +1,27 @@
+{
+    "liveServer.settings.donotShowInfoMsg": true,
+    "explorer.confirmDelete": false,
+    "liveServer.settings.donotVerifyTags": true,
+    "editor.wordWrap": "on",
+    "editor.formatOnSave": false,
+    "explorer.confirmDragAndDrop": false,
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "window.zoomLevel": 1,
+    "python.showStartPage": false,
+    "git.confirmSync": false,
+    "security.workspace.trust.untrustedFiles": "open",
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    "editor.detectIndentation": false,
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.mouseWheelZoom": true,
+    "files.trimTrailingWhitespace": true,
+	"files.insertFinalNewline": true,
+	"editor.insertSpaces": false
+}
